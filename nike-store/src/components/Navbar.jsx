@@ -1,16 +1,19 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTotalQTY, setOpenCart } from "./app/CartSlice.js";
+
 import {
-   MagnifyingGlassIcon,
    HeartIcon,
+   MagnifyingGlassIcon,
    ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 import logo from "../assets/logo.png";
-import { useDispatch } from "react-redux";
-import setOpenCart from "./app/CartSlice.js";
-import React, { useEffect, useState } from "react";
 
 const Navbar = () => {
    const [navState, setNavState] = useState(false);
    const dispatch = useDispatch();
+   const totalQTY = useSelector(selectTotalQTY);
+
    const onCartToggle = () => {
       dispatch(
          setOpenCart({
@@ -26,7 +29,6 @@ const Navbar = () => {
          setNavState(false);
       }
    };
-
    useEffect(() => {
       window.addEventListener("scroll", onNavScroll);
 
@@ -35,7 +37,7 @@ const Navbar = () => {
       };
    }, []);
    return (
-      <div>
+      <>
          <header
             className={
                !navState
@@ -72,8 +74,8 @@ const Navbar = () => {
                   <li className="grid items-center">
                      <button
                         type="button"
-                        className="border-none active:scale-110 transition-all duration-300 relative"
-                        onClick={() => onCartToggle}>
+                        onClick={onCartToggle}
+                        className="border-none outline-none active:scale-110 transition-all duration-300 relative">
                         <ShoppingBagIcon
                            className={`icon-style ${
                               navState &&
@@ -86,14 +88,14 @@ const Navbar = () => {
                                  ? "bg-slate-900 text-slate-100 shadow-slate-900"
                                  : "bg-slate-100 text-slate-900 shadow-slate-100"
                            }`}>
-                           0
+                           {totalQTY}
                         </div>
                      </button>
                   </li>
                </ul>
             </nav>
          </header>
-      </div>
+      </>
    );
 };
 
